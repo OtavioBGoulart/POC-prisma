@@ -1,4 +1,4 @@
 export type task = {
-    taks: string,
+    task: string,
     urgency: string
 }

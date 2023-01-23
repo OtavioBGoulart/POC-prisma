@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { id } from "../protocols/idTask";
 import { task } from "../protocols/task";
-import { createTask, getTaskById, getTasksDB, removeTasks } from "../repositories/taskRepositories";
+import { createTask, getTaskById, getTasksDB, removeTasks, setTask } from "../repositories/taskRepositories";
 
 export async function addTask(req: Request, res: Response) {
 
@@ -36,6 +35,22 @@ export async function deleteTask(req: Request, res : Response) {
         const taskExist = await getTaskById(id)
         if (taskExist.rowCount === 0) return res.sendStatus(404);
         await removeTasks(id);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+export async function updateTask(req: Request, res: Response) {
+
+    const { id } = req.params;
+    const { taks, urgency } = req.body as task
+
+    try {   
+        const taskExist = await getTaskById(id)
+        if (taskExist.rowCount === 0) return res.sendStatus(404);
+        await setTask(id, task, urgency);
         res.sendStatus(200);
     } catch (error) {
         console.log(error);

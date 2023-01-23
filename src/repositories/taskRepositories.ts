@@ -38,3 +38,15 @@ export function removeTasks(id: string) {
         ;`, [id]
     )
 }
+
+export function setTask(id: string,
+    task: string,
+    urgency: string) {
+
+    return connection.query(
+        `
+        UPDATE tasks SET task_description = $1, urgency = $2
+        WHERE id = $3
+        ;`, [task, urgency, id]
+    )
+}
