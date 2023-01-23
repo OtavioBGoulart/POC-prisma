@@ -18,3 +18,12 @@ export function getTasksDB() {
         `
     )
 }
+
+export function removeTasks(id: string) {
+
+    return connection.query(
+        `
+        DELETE FROM tasks WHERE id=$1
+        ;`, [id]
+    )
+}
