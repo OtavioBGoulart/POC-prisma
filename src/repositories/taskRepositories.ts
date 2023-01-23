@@ -9,3 +9,12 @@ export function createTask(task : string, urgency : string) {
         ;`, [task, urgency]
     )
 }
+
+export function getTasksDB() {
+    
+    return connection.query(
+        `
+        SELECT *, COUNT(id) FROM tasks
+        `
+    )
+}

@@ -1,9 +1,10 @@
 import tasksSchema from "../schemas/tasksSchemas";
 import { Request, Response, NextFunction } from "express";
+import { task } from "../protocols/task";
 
-export function taksValidate(req: Request, res: Response, next: NextFunction) {
+export function tasksValidate(req: Request, res: Response, next: NextFunction) {
 
-    const newTask = req.body;
+    const newTask = req.body as task;
 
     const { error } = tasksSchema.validate(newTask);
 
