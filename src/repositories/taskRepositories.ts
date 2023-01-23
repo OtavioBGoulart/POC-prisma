@@ -1,7 +1,7 @@
 import { connection } from "../database/db";
 
 
-export function createTask(task : string, urgency : string) {
+export function createTask(task: string, urgency: string) {
 
     return connection.query(
         `INSERT INTO tasks (task_description, urgency)
@@ -11,11 +11,22 @@ export function createTask(task : string, urgency : string) {
 }
 
 export function getTasksDB() {
-    
+
     return connection.query(
         `
         SELECT *, COUNT(id) FROM tasks
+        ;`
+    )
+}
+
+export function getTaskById(id: string) {
+
+    return connection.query(
         `
+        SELECT * FROM tasks
+        WHERE id=$1
+        ;`
+        , [id]
     )
 }
 
