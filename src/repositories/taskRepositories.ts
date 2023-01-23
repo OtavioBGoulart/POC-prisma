@@ -1,12 +1,22 @@
-import { connection } from "../database/db";
+import { connection } from "../database/db.js";
 
 
-export function createTask(task: string, urgency: string) {
+export function createTask(task: string, urgency: string, time: number) {
 
     return connection.query(
-        `INSERT INTO tasks (task_description, urgency)
-        VALUES ($1, $2)
-        ;`, [task, urgency]
+        `INSERT INTO tasks (task_description, urgency, predicted_time)
+        VALUES ($1, $2, $3)
+        ;`, [task, urgency, time]
+    )
+}
+
+export function countTime() {
+
+    return connection.query(
+        `
+        SELECT urgency, SUM(predicted_time) FROM tasks GROUP BY urgency;
+                                     
+        ;`
     )
 }
 
@@ -14,7 +24,8 @@ export function getTasksDB() {
 
     return connection.query(
         `
-        SELECT *, COUNT(id) FROM tasks
+        SELECT * FROM tasks
+        GROUP BY id
         ;`
     )
 }
@@ -41,12 +52,13 @@ export function removeTasks(id: string) {
 
 export function setTask(id: string,
     task: string,
-    urgency: string) {
+    urgency: string,
+    time : number) {
 
     return connection.query(
         `
-        UPDATE tasks SET task_description = $1, urgency = $2
-        WHERE id = $3
-        ;`, [task, urgency, id]
+        UPDATE tasks SET task_description = $1, urgency = $2, predicted_time = $3
+        WHERE id = $4
+        ;`, [task, urgency, time, id]
     )
 }

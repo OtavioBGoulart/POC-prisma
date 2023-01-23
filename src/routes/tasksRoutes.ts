@@ -1,13 +1,13 @@
-import { Router } from "express";
-import { addTask, deleteTask, getTasks, updateTask } from "../controllers/tasksController";
-import { tasksValidate } from "../middlewares/tasksMiddleware";
-import { getTaskById } from "../repositories/taskRepositories";
+import express from "express";
+import { addTask, deleteTask, getTasks, updateTask } from "../controllers/tasksController.js";
+import { tasksValidate } from "../middlewares/tasksMiddleware.js";
+import { getTaskById } from "../repositories/taskRepositories.js";
 
-const router = Router();
+const taksRouter = express.Router();
 
-router.post("/tasks", tasksValidate, addTask);
-router.get("/tasks", getTasks);
-router.delete("/tasks/:id", getTaskById, deleteTask);
-router.put("/tasks/:id", updateTask);
+taksRouter.post("/tasks", tasksValidate, addTask);
+taksRouter.get("/tasks", getTasks);
+taksRouter.delete("/tasks/:id", deleteTask);
+taksRouter.put("/tasks/:id", tasksValidate, updateTask);
 
-export default router;
+export default taksRouter;

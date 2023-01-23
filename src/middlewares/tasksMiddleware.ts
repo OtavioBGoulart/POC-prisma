@@ -1,6 +1,6 @@
-import tasksSchema from "../schemas/tasksSchemas";
+import tasksSchema from "../schemas/tasksSchemas.js";
 import { Request, Response, NextFunction } from "express";
-import { task } from "../protocols/task";
+import { task } from "../protocols/task.js";
 
 export function tasksValidate(req: Request, res: Response, next: NextFunction) {
 
