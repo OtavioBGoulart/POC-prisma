@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model goals {
+  id      Int      @id @default(autoincrement())
+  goal    String   @db.VarChar(500)
+  when    DateTime @db.Date
+  user_id Int
+  users   users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tasks {
+  id               Int      @id @default(autoincrement())
+  task_description String   @db.VarChar(500)
+  urgency          String   @db.VarChar(25)
+  predicted_time   Int
+  user_id          Int
+  created_at       DateTime @default(now()) @db.Timestamp(6)
+  users            users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(50)
+  email      String   @unique @db.VarChar(50)
+  password   String
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  goals      goals[]
+  tasks      tasks[]
+}
