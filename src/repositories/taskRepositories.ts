@@ -68,13 +68,19 @@ export function removeTasks(id: string) {
 }
 
 export async function setTask(id: string,
-    user_id: number,
-    task: task,
+    task: string, 
+    urgency: string, 
+    time: number
 ) {
 
-    return prisma.tasks.delete({
+    return await prisma.tasks.update({
         where: {
             id: Number(id)
+        },
+        data: {
+            task_description: task,
+            urgency,
+            predicted_time: time
         }
     })
  
@@ -84,7 +90,8 @@ export const tasksRepository = {
     createTask,
     getTasksDB,
     getTaskById,
-    removeTasks
+    removeTasks,
+    setTask
 
 }
 

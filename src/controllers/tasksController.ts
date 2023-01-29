@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { AuthenticatedRequest } from "../middlewares/authMiddleware";
-import { task, taskEntity } from "../protocols/task";
-import {  createTaskService, deleteTaskService, getTasksService, updateTaskService } from "../services/tasksService";
+import { AuthenticatedRequest } from "../middlewares/authMiddleware.js";
+import { task, taskEntity } from "../protocols/task.js";
+import {  createTaskService, deleteTaskService, getTasksService, updateTaskService } from "../services/tasksService.js";
 
 export async function addTask(req: AuthenticatedRequest, res: Response) {
 
@@ -40,7 +40,7 @@ export async function deleteTask(req: AuthenticatedRequest, res : Response) {
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
-        res.sendStatus(500);
+        res.sendStatus(404);
     }
 }
 
@@ -55,6 +55,6 @@ export async function updateTask(req: AuthenticatedRequest, res: Response) {
         res.sendStatus(200);
     } catch (error) {
         console.log(error);
-        res.sendStatus(500);
+        res.sendStatus(404);
     }
 }
