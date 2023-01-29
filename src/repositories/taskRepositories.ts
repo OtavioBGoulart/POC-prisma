@@ -1,64 +1,90 @@
-import { connection } from "../database/db.js";
+import prisma from "../database/db.js";
+import { task } from "../protocols/task.js";
 
 
-export function createTask(task: string, urgency: string, time: number) {
+async function createTask(task: string, urgency: string, time: number, id: number) {
 
-    return connection.query(
-        `INSERT INTO tasks (task_description, urgency, predicted_time)
-        VALUES ($1, $2, $3)
-        ;`, [task, urgency, time]
-    )
+    return await prisma.tasks.create({
+        data: {
+            task_description: task,
+            urgency,
+            predicted_time: time,
+            user_id: id
+        }
+    })
 }
 
-export function countTime() {
+// export async function countTime(id: number) {
 
-    return connection.query(
-        `
-        SELECT urgency, SUM(predicted_time) FROM tasks GROUP BY urgency;
-                                     
-        ;`
-    )
+//     return await prisma.tasks.findMany({
+//         where: {
+//             user_id: id
+//         },
+//         groupBy: {
+//             urgency: true,
+//         },
+//         include: {
+//             aggregate: {
+//                 sum: {predicted_time: true},
+//             },
+//         },
+//     }) 
+//     // return connection.query(
+//     //     `
+//     //     SELECT urgency, SUM(predicted_time) FROM tasks GROUP BY urgency;
+
+//     //     ;`
+//     // )
+// }
+
+export async function getTasksDB(id: number) {
+
+    return await prisma.tasks.findMany({
+        where: {
+            user_id: id
+        }
+    })
 }
 
-export function getTasksDB() {
+export async function getTaskById(id: string, user_id: number) {
 
-    return connection.query(
-        `
-        SELECT * FROM tasks
-        GROUP BY id
-        ;`
-    )
-}
-
-export function getTaskById(id: string) {
-
-    return connection.query(
-        `
-        SELECT * FROM tasks
-        WHERE id=$1
-        ;`
-        , [id]
-    )
+    return await prisma.tasks.findFirst({
+        where: {
+            AND: [
+                { id: Number(id) },
+                { user_id }
+            ]
+        }
+    })
 }
 
 export function removeTasks(id: string) {
 
-    return connection.query(
-        `
-        DELETE FROM tasks WHERE id=$1
-        ;`, [id]
-    )
+    return prisma.tasks.delete({
+        where: {
+            id: Number(id)
+        }
+    })
 }
 
-export function setTask(id: string,
-    task: string,
-    urgency: string,
-    time : number) {
+export async function setTask(id: string,
+    user_id: number,
+    task: task,
+) {
 
-    return connection.query(
-        `
-        UPDATE tasks SET task_description = $1, urgency = $2, predicted_time = $3
-        WHERE id = $4
-        ;`, [task, urgency, time, id]
-    )
+    return prisma.tasks.delete({
+        where: {
+            id: Number(id)
+        }
+    })
+ 
 }
+
+export const tasksRepository = {
+    createTask,
+    getTasksDB,
+    getTaskById,
+    removeTasks
+
+}
+
