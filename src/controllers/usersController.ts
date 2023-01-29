@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { signUpService } from "../services/usersService.js";
+import { signInService, signUpService } from "../services/usersService.js";
 import { signInType } from "../protocols/signIn.js";
+import { SignInRequest } from "../middlewares/users.middleware.js";
 
 export async function signUp(req: Request, res: Response) {
     const {name, email, password} = req.body as signInType;
@@ -15,17 +15,16 @@ export async function signUp(req: Request, res: Response) {
     }
 }
 
-export async function signIn(req: Request, res: Response) {
-    const { id, name } = req.body;
+export async function signIn(req: SignInRequest, res: Response) {
+    const id  = req.userId;
 
-    const token = jwt.sign(
-        { user_id: id, name },
-        process.env.TOKEN_KEY,
-        {
-            expiresIn: 60 * 60 * 12,
-        }
-    )
-
+    try {
+    const token = signInService(id)
     res.status(200).send({ token });
+    
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 }
 
