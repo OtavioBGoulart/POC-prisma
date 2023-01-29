@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/OtavioBGoulart/POC-TS-ToDoList#readme",
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/pg": "^8.6.6",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",

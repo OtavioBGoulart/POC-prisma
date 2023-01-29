@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { usersRepositories } from "../repositories/usersRepository";
-import { signupSchema } from "../schemas/usersSechemas";
+import { usersRepositories } from "../repositories/usersRepository.js";
+import { signupSchema } from "../schemas/usersSechemas.js";
 
 
-export async function signUpValidation(req: Request, res: Response, next: NextFunction) {
-    const { name, email, password} = req.body;
+export async function signUpValidate(req: Request, res: Response, next: NextFunction) {
+    const { email } = req.body;
     const signUpData = req.body;
 
     const { error } = signupSchema.validate(signUpData, { abortEarly: false });
@@ -20,7 +20,6 @@ export async function signUpValidation(req: Request, res: Response, next: NextFu
         const userExist = await usersRepositories.findUser(email);
         
         if (userExist) return res.status(409).send( { message: "Esse email já existe"});
-        res.locals.user = signUpData;
 
 
     } catch(error) {
@@ -31,7 +30,7 @@ export async function signUpValidation(req: Request, res: Response, next: NextFu
     next();
 }
 
-export async function signInValidate(req: Request, res: Response, next: NextFunction) {
+export async function signInValidate(req: SignInRequest, res: Response, next: NextFunction) {
     const { email, password } = req.body;
 
     try {
@@ -41,11 +40,20 @@ export async function signInValidate(req: Request, res: Response, next: NextFunc
         const passwordCompare = bcrypt.compareSync(password, userExist.password);
         if (!passwordCompare) return res.sendStatus(401);
 
+        req.userId = userExist.id
+
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
     }
+    
 
     next();
 }
+
+export type SignInRequest = Request & signInData;
+
+type signInData = {
+  userId: number;
+};
 
