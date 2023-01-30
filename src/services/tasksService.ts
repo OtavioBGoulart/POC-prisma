@@ -1,5 +1,5 @@
 import { task, taskEntity } from "../protocols/task.js";
-import { getTaskById, removeTasks, setTask, tasksRepository } from "../repositories/taskRepositories.js";
+import { tasksRepository } from "../repositories/taskRepositories.js";
 
 
 export async function createTaskService(task: string, urgency: string, time: number, id: number) {
@@ -27,19 +27,17 @@ export async function getTasksService(id: number) {
 
 export async function deleteTaskService(id: string, user_id: number) {
 
-    const taskExist = await getTaskById(id, user_id)
+    const taskExist = await tasksRepository.getTaskById(id, user_id)
     if (!taskExist) throw new Error("Não encontrado")
-    await removeTasks(id);
+    await tasksRepository.removeTasks(id);
     return
 }
 
 export async function updateTaskService(id: string, user_id: number, task: string,  urgency: string, time: number) {
 
-    const taskExist = await getTaskById(id, user_id)
+    const taskExist = await tasksRepository.getTaskById(id, user_id)
     if (!taskExist) throw new Error("Não encontrado")
-    await setTask(id, task, urgency, time);
+    await tasksRepository.setTask(id, task, urgency, time);
 
-   
-    await removeTasks(id);
     return
 }

@@ -1,14 +1,12 @@
 import prisma from "../database/db.js";
-import { task } from "../protocols/task.js";
 
 
-async function createTask(task: string, urgency: string, time: number, id: number) {
+async function createGoal(goal: string, when: Date | string, id: number) {
 
-    return await prisma.tasks.create({
+    return await prisma.goals.create({
         data: {
-            task_description: task,
-            urgency,
-            predicted_time: time,
+            goal,
+            when,
             user_id: id
         }
     })
@@ -37,18 +35,18 @@ async function createTask(task: string, urgency: string, time: number, id: numbe
 //     // )
 // }
 
-async function getTasksDB(id: number) {
+async function getGoalsDB(id: number) {
 
-    return await prisma.tasks.findMany({
+    return await prisma.goals.findMany({
         where: {
             user_id: id
         }
     })
 }
 
-async function getTaskById(id: string, user_id: number) {
+async function getGoalById(id: string, user_id: number) {
 
-    return await prisma.tasks.findFirst({
+    return await prisma.goals.findFirst({
         where: {
             AND: [
                 { id: Number(id) },
@@ -58,16 +56,16 @@ async function getTaskById(id: string, user_id: number) {
     })
 }
 
-async function removeTasks(id: string) {
+async function removeGoal(id: string) {
 
-    return await prisma.tasks.delete({
+    return await prisma.goals.delete({
         where: {
             id: Number(id)
         }
     })
 }
 
-async function setTask(id: string,
+async function setGoal(id: string,
     task: string, 
     urgency: string, 
     time: number
@@ -86,11 +84,10 @@ async function setTask(id: string,
  
 }
 
-export const tasksRepository = {
-    createTask,
-    getTasksDB,
-    getTaskById,
-    removeTasks,
-    setTask
+export const goalsRepository = {
+    createGoal,
+    getGoalsDB,
+    getGoalById,
+    removeGoal
 }
 

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware.js";
 import { task, taskEntity } from "../protocols/task.js";
 import {  createTaskService, deleteTaskService, getTasksService, updateTaskService } from "../services/tasksService.js";

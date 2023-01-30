@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { goal } from "../protocols/goal";
-import { goalSchema } from "../schemas/goalsSchemas";
+import { goal } from "../protocols/goal.js";
+import { goalSchema } from "../schemas/goalsSchemas.js";
 
 export function goalsValidate(req: Request, res: Response, next: NextFunction) {
 
