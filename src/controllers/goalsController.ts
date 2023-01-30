@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../middlewares/authMiddleware.js";
 import { goal } from "../protocols/goal.js";
-import { createGoalService, deleteGoalService, getGoalsService } from "../services/goalsService.js";
+import { createGoalService, deleteGoalService, getGoalsService, updateGoalService } from "../services/goalsService.js";
 
 export async function addGoal(req: AuthenticatedRequest, res: Response) {
 
@@ -44,17 +44,17 @@ export async function deleteGoal(req: AuthenticatedRequest, res : Response) {
     }
 }
 
-// export async function updateTask(req: AuthenticatedRequest, res: Response) {
+export async function updateGoal(req: AuthenticatedRequest, res: Response) {
 
-//     const { id } = req.params;
-//     const { task, urgency, time } = req.body as task
-//     const user_id = req.userId
+    const { id } = req.params;
+    const { goal, when } = req.body as goal
+    const user_id = req.userId
 
-//     try {   
-//         await updateTaskService(id, user_id, task, urgency, time)
-//         res.sendStatus(200);
-//     } catch (error) {
-//         console.log(error);
-//         res.sendStatus(404);
-//     }
-// }
+    try {   
+        await updateGoalService(id, user_id, goal, when);
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(404);
+    }
+}

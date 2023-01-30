@@ -1,7 +1,7 @@
 import { goalsRepository } from "../repositories/goalsRepository.js";
 
 
-export async function createGoalService(goal: string, when: Date | string, id: number) {
+export async function createGoalService(goal: string, when: number, id: number) {
 
     await goalsRepository.createGoal(goal, when, id);
     return
@@ -32,13 +32,11 @@ export async function deleteGoalService(id: string, user_id: number) {
     return
 }
 
-// export async function updateTaskService(id: string, user_id: number, task: string,  urgency: string, time: number) {
+export async function updateGoalService(id: string, user_id: number, goal: string, when: number) {
 
-//     const taskExist = await getTaskById(id, user_id)
-//     if (!taskExist) throw new Error("Não encontrado")
-//     await setTask(id, task, urgency, time);
+    const goalExist = await goalsRepository.getGoalById(id, user_id)
+    if (!goalExist) throw new Error("Não encontrado")
+    await goalsRepository.setGoal(id, goal, when);
 
-   
-//     await removeTasks(id);
-//     return
-// }
+    return
+}

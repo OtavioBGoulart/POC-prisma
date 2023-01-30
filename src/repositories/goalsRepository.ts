@@ -1,12 +1,12 @@
 import prisma from "../database/db.js";
 
 
-async function createGoal(goal: string, when: Date | string, id: number) {
+async function createGoal(goal: string, when: number, id: number) {
 
     return await prisma.goals.create({
         data: {
             goal,
-            when,
+            time_months: when,
             user_id: id
         }
     })
@@ -66,19 +66,17 @@ async function removeGoal(id: string) {
 }
 
 async function setGoal(id: string,
-    task: string, 
-    urgency: string, 
-    time: number
+    goal: string, 
+    when: number, 
 ) {
 
-    return await prisma.tasks.update({
+    return await prisma.goals.update({
         where: {
             id: Number(id)
         },
         data: {
-            task_description: task,
-            urgency,
-            predicted_time: time
+            goal,
+            time_months: when
         }
     })
  
@@ -88,6 +86,7 @@ export const goalsRepository = {
     createGoal,
     getGoalsDB,
     getGoalById,
-    removeGoal
+    removeGoal,
+    setGoal
 }
 

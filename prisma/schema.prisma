@@ -8,11 +8,11 @@ datasource db {
 }
 
 model goals {
-  id      Int      @id @default(autoincrement())
-  goal    String   @db.VarChar(500)
-  when    DateTime @db.Date
-  user_id Int
-  users   users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int    @id @default(autoincrement())
+  goal        String @db.VarChar(500)
+  time_months Int
+  user_id     Int
+  users       users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model tasks {
