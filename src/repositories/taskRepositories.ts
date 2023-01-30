@@ -14,28 +14,18 @@ async function createTask(task: string, urgency: string, time: number, id: numbe
     })
 }
 
-// export async function countTime(id: number) {
+export async function countTime(id: number) {
 
-//     return await prisma.tasks.findMany({
-//         where: {
-//             user_id: id
-//         },
-//         groupBy: {
-//             urgency: true,
-//         },
-//         include: {
-//             aggregate: {
-//                 sum: {predicted_time: true},
-//             },
-//         },
-//     }) 
-//     // return connection.query(
-//     //     `
-//     //     SELECT urgency, SUM(predicted_time) FROM tasks GROUP BY urgency;
-
-//     //     ;`
-//     // )
-// }
+    return await prisma.tasks.groupBy({
+        by: ["urgency"],
+        where: {
+            user_id: id
+        },
+        _sum: {
+            predicted_time: true
+        },
+    })
+}
 
 async function getTasksDB(id: number) {
 
@@ -68,8 +58,8 @@ async function removeTasks(id: string) {
 }
 
 async function setTask(id: string,
-    task: string, 
-    urgency: string, 
+    task: string,
+    urgency: string,
     time: number
 ) {
 
@@ -83,7 +73,7 @@ async function setTask(id: string,
             predicted_time: time
         }
     })
- 
+
 }
 
 export const tasksRepository = {
@@ -91,6 +81,7 @@ export const tasksRepository = {
     getTasksDB,
     getTaskById,
     removeTasks,
-    setTask
+    setTask,
+    countTime
 }
 

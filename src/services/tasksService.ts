@@ -22,7 +22,9 @@ export async function getTasksService(id: number) {
 
     const task = await tasksRepository.getTasksDB(id)
     if (!task) throw new Error("Não encontrado")
-    return task;
+    const totalTime = await tasksRepository.countTime(id)
+    const response = [totalTime, task]
+    return response;
 }
 
 export async function deleteTaskService(id: string, user_id: number) {

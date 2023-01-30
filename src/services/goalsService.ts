@@ -8,14 +8,6 @@ export async function createGoalService(goal: string, when: number, id: number) 
 
 }
 
-// export async function countTimeService(id: number) {
-
-//     //const result = await tasksRepository.countTime(id);
-//     // const  { rows }  = await countTime();
-//     //     console.log(rows)
-//     //     const result = await getTasksDB();
-//     //     if (result.rowCount === 0) return res.sendStatus(404);
-// }
 
 export async function getGoalsService(id: number) {
 
